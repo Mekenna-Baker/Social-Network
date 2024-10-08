@@ -9,15 +9,15 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
     },
-    
-//ensure email formatting
+
+    //ensure email formatting
 
     email: {
         type: String,
-        required: true, 
-        unique: true, 
+        required: true,
+        unique: true,
         trim: true,
-        match: [/.+@.+\..+/, 'Please enter a valid e-mail address'], 
+        match: [/.+@.+\..+/, 'Please enter a valid e-mail address'],
     },
 
     friends: [
@@ -35,7 +35,7 @@ const userSchema = new Schema({
     ],
 
 }, {
- //Convert data to JSON, and include virtual properties(friendCount) 
+    //Convert data to JSON, and include virtual properties(friendCount) 
 
     toJSON: {
         virtuals: true,
