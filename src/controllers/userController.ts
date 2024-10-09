@@ -28,8 +28,8 @@ export const getUserById = async (req: Request, res: Response) => {
 // POST a new user
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const userData = await User.create(req.body);
-        res.json(userData);
+        const newUser = await User.create(req.body);
+        res.json(newUser);
     } catch (error) {
         res.status(500).json({ error: 'Failed to create user' });
     }
