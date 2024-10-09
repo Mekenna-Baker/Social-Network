@@ -25,10 +25,11 @@ And finally, start the server by running npm start.
 
 ## Usage
 
-<!-- Insert walkthough video here! -->
-
 This API provides a variety of endpoints to interact with users, thoughts, reactions, and friend lists. 
 You can test each route using Insomnia or Postman.
+
+Walkthrough video below!
+https://youtu.be/6-uQmOwE9Ts
 
 ## Features
 
