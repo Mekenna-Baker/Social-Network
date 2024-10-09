@@ -1,5 +1,5 @@
 //import mongodb connection
-import db from './src/config/connection';
+import db from './config/connection.js';
 import express from 'express';
 //import routes
 
