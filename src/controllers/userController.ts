@@ -91,9 +91,8 @@ export const removeFriend = async (req: Request, res: Response) => {
         );
         if (!userData) {
             res.status(404).json({ error: 'User not found' });
-            return;
         }
-        res.json(userData);
+        res.json({ message: 'Friend removed', userData });
     } catch (error) {
         res.status(500).json({ error: 'Failed to remove friend' });
     }

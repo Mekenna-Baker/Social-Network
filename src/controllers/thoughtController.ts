@@ -81,3 +81,39 @@ export const deleteThought = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to delete thought' });
     }
 };
+
+// POST a new reaction to a thought
+
+export const addReaction = async (req: Request, res: Response) => {
+    try {
+        const thoughtData = await Thought.findByIdAndUpdate(
+            req.params.thoughtId,
+            { $push: { reactions: req.body } },
+            { new: true }
+        );
+        if (!thoughtData) {
+            res.status(404).json({ error: 'No thought with that ID' });
+        }
+        res.json(thoughtData);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add reaction' });
+    }
+};
+
+// DELETE a reaction from a thought
+
+export const removeReaction = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findByIdAndUpdate(
+            req.params.thoughtId,
+            { $pull: { reactions: { _id: req.params.reactionId } } },
+            { new: true }
+        );
+        if (!thought) {
+         res.status(404).json({ message: 'No thought with that ID ' });
+        }
+        res.json({ message: 'Reaction removed', thought });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to remove reaction' });
+    }
+};
