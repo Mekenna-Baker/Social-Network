@@ -26,8 +26,8 @@ export const getUserById = async (req, res) => {
 // POST a new user
 export const createUser = async (req, res) => {
     try {
-        const userData = await User.create(req.body);
-        res.json(userData);
+        const newUser = await User.create(req.body);
+        res.json(newUser);
     }
     catch (error) {
         res.status(500).json({ error: 'Failed to create user' });
@@ -81,9 +81,8 @@ export const removeFriend = async (req, res) => {
         const userData = await User.findByIdAndUpdate(req.params.userId, { $pull: { friends: req.params.friendId } }, { new: true });
         if (!userData) {
             res.status(404).json({ error: 'User not found' });
-            return;
         }
-        res.json(userData);
+        res.json({ message: 'Friend removed', userData });
     }
     catch (error) {
         res.status(500).json({ error: 'Failed to remove friend' });
