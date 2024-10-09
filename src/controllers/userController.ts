@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/user';
-import Thought from '../models/thought';
 
-//GET  all users
-
+// GET all users
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
         const usersData = await User.find();
@@ -13,13 +11,13 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     }
 };
 
-//GET a single user by ID
-
+// GET a single user by ID
 export const getUserById = async (req: Request, res: Response) => {
     try {
         const userData = await User.findOne({ _id: req.params.id });
         if (!userData) {
             res.status(404).json({ error: 'No user with that ID' });
+            return;
         }
         res.json(userData);
     } catch (error) {
@@ -27,8 +25,7 @@ export const getUserById = async (req: Request, res: Response) => {
     }
 };
 
-//POST a new user
-
+// POST a new user
 export const createUser = async (req: Request, res: Response) => {
     try {
         const userData = await User.create(req.body);
@@ -38,13 +35,13 @@ export const createUser = async (req: Request, res: Response) => {
     }
 };
 
-//PUT an existing user by ID
-
+// PUT an existing user by ID
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!user) {
             res.status(404).json({ error: 'User not found' });
+            return;
         }
         res.json(user);
     } catch (error) {
@@ -52,17 +49,52 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 };
 
-//DELETE a user by ID
-
+// DELETE a user by ID
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const userData = await User.findByIdAndDelete(req.params.id);
         if (!userData) {
-             res.status(404).json({ error: 'User not found' });
+            res.status(404).json({ error: 'User not found' });
+            return;
         }
-
-         res.json({ message: 'User deleted' });
+        res.json({ message: 'User deleted' });
     } catch (error) {
-         res.status(500).json({ error: 'Failed to delete user' });
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+};
+
+// POST a new friend to user friend list
+export const addFriend = async (req: Request, res: Response) => {
+    try {
+        const userData = await User.findByIdAndUpdate(
+            req.params.userId,
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true }
+        );
+        if (!userData) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        res.json(userData);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add friend' });
+    }
+};
+
+// DELETE a friend from user friend list
+export const removeFriend = async (req: Request, res: Response) => {
+    try {
+        const userData = await User.findByIdAndUpdate(
+            req.params.userId,
+            { $pull: { friends: req.params.friendId } },
+            { new: true }
+        );
+        if (!userData) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        res.json(userData);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to remove friend' });
     }
 };
